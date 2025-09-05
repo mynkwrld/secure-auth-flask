@@ -1,44 +1,128 @@
-# === Secure Authentication System: one-shot setup & run ===
+# 🔐 Secure Authentication System (Flask + JWT)
 
-# 1. Clone repo (or make empty folder if already created manually)
-git clone https://github.com/<your-username>/secure-auth-flask.git || mkdir secure-auth-flask
+A simple but secure authentication system built with **Python Flask**, **JWT (JSON Web Tokens)**, and **bcrypt** for password hashing.  
+This project was created as part of my internship project.  
+
+---
+
+## ⚙️ Features
+- ✅ User Registration with encrypted passwords  
+- ✅ Secure Login with JWT tokens (access + refresh)  
+- ✅ Token-based Authentication & Authorization  
+- ✅ Session management (token expiry & refresh)  
+- ✅ SQLite (default) or PostgreSQL support  
+
+---
+
+## 📋 Requirements
+- Python 3.x  
+- Flask  
+- PyJWT  
+- bcrypt  
+- SQLAlchemy  
+- python-dotenv  
+
+(All dependencies are listed in `requirements.txt`)
+
+---
+
+## 🚀 Quick Start (One Command)
+Clone repo, set up environment, install deps, init DB, and run server in one go:
+
+```bash
+git clone https://github.com/mynkwrld/secure-auth-flask.git
 cd secure-auth-flask
+bash run_local.sh
+```
 
-# 2. Create virtual environment + activate
-python -m venv .venv
-source .venv/bin/activate
+App will be running at:  
+👉 [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
-# 3. Create required files (requirements.txt, .env, app.py, README.md)
-cat > requirements.txt <<'REQ'
-Flask==3.0.3
-Flask-SQLAlchemy==3.1.1
-PyJWT==2.8.0
-python-dotenv==1.0.1
-bcrypt==4.1.3
-REQ
+---
 
-cat > .env <<'ENV'
-FLASK_ENV=development
-SECRET_KEY=$(python -c "import secrets; print(secrets.token_hex(32))")
-# Leave DATABASE_URL empty for SQLite (default)
-# DATABASE_URL=postgresql+psycopg2://postgres:postgres@localhost:5432/secure_auth_db
-ACCESS_TOKEN_MINUTES=15
-REFRESH_TOKEN_DAYS=7
-ENV
+## 🛠 API Usage Examples
 
-cat > app.py <<'APP'
-<-- paste the full app.py content I gave earlier here -->
-APP
+### 🔹 1. Register User
+**Endpoint:** `POST /register`  
+**Request JSON:**
+```json
+{
+  "username": "mayank",
+  "password": "mypassword123"
+}
+```
 
-cat > README.md <<'MD'
-<-- paste the final README.md content I gave earlier here -->
-MD
+**Response:**
+```json
+{
+  "message": "User registered successfully!"
+}
+```
 
-# 4. Install deps
-pip install -r requirements.txt
+---
 
-# 5. Initialize DB
-flask --app app.py init-db
+### 🔹 2. Login User
+**Endpoint:** `POST /login`  
+**Request JSON:**
+```json
+{
+  "username": "mayank",
+  "password": "mypassword123"
+}
+```
 
-# 6. Run the server (available at http://127.0.0.1:5000)
-flask --app app.py run
+**Response:**
+```json
+{
+  "access_token": "<JWT_ACCESS_TOKEN>",
+  "refresh_token": "<JWT_REFRESH_TOKEN>"
+}
+```
+
+---
+
+### 🔹 3. Access Protected Route
+**Endpoint:** `GET /protected`  
+**Headers:**
+```
+Authorization: Bearer <JWT_ACCESS_TOKEN>
+```
+
+**Response (if token is valid):**
+```json
+{
+  "message": "Welcome, mayank! You have accessed a protected route."
+}
+```
+
+---
+
+## 🗄 Database
+- Default: **SQLite** (auto-created `app.db`)  
+- For PostgreSQL, set `DATABASE_URL` in `.env`:  
+```
+DATABASE_URL=postgresql+psycopg2://username:password@localhost:5432/secure_auth_db
+```
+
+---
+
+## 📂 Project Structure
+```
+secure-auth-flask/
+│── app.py            # Main Flask app
+│── requirements.txt  # Dependencies
+│── .env.example      # Example environment file
+│── run_local.sh      # One-shot setup script
+│── README.md         # Project documentation
+```
+
+---
+
+## 👤 Author
+**Mayank Sharma**  
+📅 Internship Project – 2025  
+
+---
+
+## ⭐ Contribute
+If you like this project, don’t forget to **star ⭐ the repo** on GitHub!  
